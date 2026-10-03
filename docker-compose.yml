@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  staylink-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: staylink_web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=postgresql://staylink_user:staylink_password@postgres:5432/staylink_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=production_jwt_secret_must_be_changed_in_env
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - staylink_uploads:/app/public/uploads
+      - staylink_data:/app/data
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: staylink_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: staylink_user
+      POSTGRES_PASSWORD: staylink_password
+      POSTGRES_DB: staylink_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: staylink_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  staylink_uploads:
+  staylink_data:
+  postgres_data:
+  redis_data:

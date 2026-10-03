@@ -1,0 +1,6 @@
+{
+  "name": "StayLink — India-wide Home Rental Marketplace",
+  "description": "Find verified rental homes, flats, PGs, and shared rooms directly from property owners across India with zero broker fees and transparent pricing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
